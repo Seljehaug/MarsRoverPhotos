@@ -1,74 +1,45 @@
 <template>
   <div class="home">
-    <p>Home</p>
+    <div class="manifests">
+      <Manifest :rover="curiosity"/>
+      <Manifest :rover="opportunity"/>
+      <Manifest :rover="spirit"/>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
-  import { NASA_API_KEY } from '../../configuration/API_KEY';
-
-  interface IHome {
-    curiosityManifest: any;
-    opportunityManifest: any;
-    spiritManifest: any;
-
-    getManifest(rover: Rovers): void;
-  }
-
-  export enum Rovers {
-    Curiosity = 0,
-    Opportunity = 1,
-    Spirit = 2
-  }
+  import Manifest from "@/components/Manifest.vue";
+  import {RoverType} from "@/enums/enums";
 
   export default Vue.extend({
     name: 'Home',
     props: {},
     data() {
       return {
-        curiosityManifest: null,
-        opportunityManifest: null,
-        spiritManifest: null
+        curiosity: RoverType.Curiosity,
+        opportunity: RoverType.Opportunity,
+        spirit: RoverType.Spirit,
       }
     },
-    mounted() {
-      const self = this as IHome;
-
-      self.getManifest(Rovers.Curiosity);
-      self.getManifest(Rovers.Opportunity);
-      self.getManifest(Rovers.Spirit);
-    },
-    methods: {
-      getManifest(rover: Rovers) {
-        const self = this as IHome;
-        const roverName = Rovers[rover].toLowerCase();
-
-        fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/${roverName}?api_key=${NASA_API_KEY}`)
-          .then(response => {
-            return response.json()
-              .then(data => {
-                switch (rover) {
-                  case Rovers.Curiosity: {
-                    self.curiosityManifest = data.photo_manifest;
-                    break;
-                  }
-                  case Rovers.Opportunity: {
-                    self.opportunityManifest = data.photo_manifest;
-                    break;
-                  }
-                  case Rovers.Spirit: {
-                    self.spiritManifest = data.photo_manifest;
-                    break;
-                  }
-                }
-              });
-          });
-      }
+    components: {
+      Manifest
     }
   });
 </script>
 
 <style scoped lang="scss">
+  .home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
+  .manifests {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
 </style>

@@ -1,3 +1,5 @@
+@import 'src/assets/styles/variables';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,4 +9,22 @@
 body {
   background-image: url("../images/mars_surface.jpg");
   background-size: cover;
+  font-family: 'Montserrat', 'sans-serif';
+  padding: 1rem;
+  max-width: 1400px;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  color: $color-white;
+}
+
+h1, h2, h3 {
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 2rem;
 }
