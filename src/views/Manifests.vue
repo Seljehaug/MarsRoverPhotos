@@ -11,16 +11,16 @@
 <script lang="ts">
   import Vue from 'vue';
   import Manifest from "@/components/Manifest.vue";
-  import {RoverType} from "@/enums/enums";
+  import {Rover} from "@/enums/enums";
 
   export default Vue.extend({
-    name: 'Home',
+    name: 'Manifests',
     props: {},
     data() {
       return {
-        curiosity: RoverType.Curiosity,
-        opportunity: RoverType.Opportunity,
-        spirit: RoverType.Spirit,
+        curiosity: Rover.Curiosity,
+        opportunity: Rover.Opportunity,
+        spirit: Rover.Spirit,
       }
     },
     components: {
