@@ -14,7 +14,11 @@ const routes = [
   {
     path: '/rover/:id/images',
     name: 'RoverImages',
-    component: RoverImages
+    component: RoverImages,
+    props: (route: any) => {
+      const id = parseInt(route.params.id);
+      return { id }
+    }
   }
 ];
 

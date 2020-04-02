@@ -38,3 +38,100 @@ a {
     text-decoration: underline;
   }
 }
+
+input {
+  font-family: inherit;
+  padding: 0.2rem;
+}
+
+.main-heading a {
+  color: $color-white;
+  text-decoration: none;
+  
+  &:hover {
+    color: $color-white-hover;
+  }
+}
+
+// Datepicker component custom styles
+.vdp-datepicker {
+  width: 120px;
+  
+  input[type='text'] {
+    width: 120px;
+  }
+  
+  * {
+    font-family: 'Montserrat', 'sans-serif';
+  }
+  
+  .datepicker {
+    background: #232323;
+    border: none;
+    margin-top: 0.5rem;
+    color: white;
+  }
+  
+  // Arrows
+  .vdp-datepicker__calendar {
+    header {
+      .up:not(.disabled) {
+        &:hover, &:focus {
+          background-color: $color-black-less-transparent;
+        }
+      }
+
+      .prev:not(.disabled), .next:not(.disabled) {
+        transition: background-color 150ms ease;
+
+        &:hover, &:focus {
+          background-color: $color-black-less-transparent;
+        }
+      }
+
+      .prev::after {
+        border-right: 10px solid $color-accent;
+      }
+
+      .next::after {
+        border-left: 10px solid $color-accent;
+      }
+    }
+    
+    .cell:not(.blank).cell:not(.disabled) {
+      
+      &.day, &.month, &.year {
+        &.selected {
+          background-color: $color-accent;
+        }
+        
+        &:hover, &:focus {
+          border-color: $color-accent;
+          outline: none;
+        }
+        
+      }
+      
+    }
+  }
+}
+
+// Tooltip directive custom styles
+.tooltip {
+  background: black;
+  border-radius: $tooltip-border-radius;
+  
+  &.below {
+    margin-top: 5px;
+  }
+}
+
+.tooltip-inner {
+  border-radius: $tooltip-border-radius;
+  max-width: 360px;
+  background-color: $color-black-less-transparent;
+  color: white;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  line-height: 1.35;
+}

@@ -11,7 +11,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Manifest from "@/components/Manifest.vue";
-  import {Rover} from "@/enums/enums";
+  import {Rover} from "@/enums";
 
   export default Vue.extend({
     name: 'Manifests',
@@ -23,6 +23,10 @@
         spirit: Rover.Spirit,
       }
     },
+    // beforeRouteLeave(to, from, next) {
+    //   // this.$store.dispatch('setAllManifestsLoadedValue', false);
+    //   next();
+    // },
     components: {
       Manifest
     }

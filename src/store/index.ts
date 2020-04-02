@@ -1,10 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {emptyManifest} from '@/utility';
+import {Rover} from '@/enums';
+import {IManifest} from '@/interfaces';
 
 Vue.use(Vuex);
 
+interface IRoverData {
+  rover: Rover;
+  manifest: IManifest;
+  images: any[];
+}
+
 export default new Vuex.Store({
   state: {
+    curiosityManifest: emptyManifest,
+    opportunityManifest: emptyManifest,
+    spiritManifest: emptyManifest,
     curiosityManifestLoaded: false,
     opportunityManifestLoaded: false,
     spiritManifestLoaded: false
@@ -18,6 +30,19 @@ export default new Vuex.Store({
     },
     setSpiritManifestLoadedValue(state, value) {
       state.spiritManifestLoaded = value;
+    },
+    setManifest(state, roverData: IRoverData) {
+      switch (roverData.rover) {
+        case Rover.Curiosity:
+          state.curiosityManifest = roverData.manifest;
+          break;
+        case Rover.Opportunity:
+          state.opportunityManifest = roverData.manifest;
+          break;
+        case Rover.Spirit:
+          state.spiritManifest = roverData.manifest;
+          break;
+      }
     }
   },
   actions: {
@@ -29,13 +54,28 @@ export default new Vuex.Store({
     },
     setSpiritManifestLoadedValue(context, value) {
       context.commit('setSpiritManifestLoadedValue', value);
+    },
+    setManifest(context, roverData: IRoverData) {
+      context.commit('setManifest', roverData)
     }
   },
   getters: {
     allManifestsLoaded: state => {
       return state.curiosityManifestLoaded && state.opportunityManifestLoaded && state.spiritManifestLoaded;
+    },
+    manifestLoaded: state => (rover: Rover) => {
+      switch (rover) {
+        case Rover.Curiosity: return state.curiosityManifestLoaded;
+        case Rover.Opportunity: return state.opportunityManifestLoaded;
+        case Rover.Spirit: return state.spiritManifestLoaded;
+      }
+    },
+    getManifest: state => (rover: Rover) => {
+      switch (rover) {
+        case Rover.Curiosity: return state.curiosityManifest;
+        case Rover.Opportunity: return state.opportunityManifest;
+        case Rover.Spirit: return state.spiritManifest;
+      }
     }
-  },
-  modules: {
   }
 })

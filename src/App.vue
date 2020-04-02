@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <h1 class="main-heading">Mars rovers</h1>
+    <h1 class="main-heading">
+      <router-link :to="{name : 'Manifests'}">Mars rovers</router-link>
+    </h1>
 
     <router-view/>
   </div>
