@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {emptyManifest} from '@/utility';
 import {Rover} from '@/enums';
-import {IManifest} from '@/interfaces';
+import {ICameraData, IManifest} from '@/interfaces';
 
 Vue.use(Vuex);
 
@@ -10,6 +10,8 @@ interface IRoverData {
   rover: Rover;
   manifest: IManifest;
   images: any[];
+  availableCameras: ICameraData[];
+  selectedCameras: ICameraData[];
 }
 
 export default new Vuex.Store({
@@ -19,7 +21,9 @@ export default new Vuex.Store({
     spiritManifest: emptyManifest,
     curiosityManifestLoaded: false,
     opportunityManifestLoaded: false,
-    spiritManifestLoaded: false
+    spiritManifestLoaded: false,
+    availableCameras: [],
+    selectedCameras: []
   },
   mutations: {
     setCuriosityManifestLoadedValue(state, value) {
@@ -43,6 +47,12 @@ export default new Vuex.Store({
           state.spiritManifest = roverData.manifest;
           break;
       }
+    },
+    setAvailableCameras(state, cameras) {
+      state.availableCameras = cameras;
+    },
+    setSelectedCameras(state, cameras) {
+      state.selectedCameras = cameras;
     }
   },
   actions: {
@@ -57,6 +67,12 @@ export default new Vuex.Store({
     },
     setManifest(context, roverData: IRoverData) {
       context.commit('setManifest', roverData)
+    },
+    setAvailableCameras(context, cameras: ICameraData[]) {
+      context.commit('setAvailableCameras', cameras);
+    },
+    setSelectedCameras(context, cameras: ICameraData[]) {
+      context.commit('setSelectedCameras', cameras);
     }
   },
   getters: {

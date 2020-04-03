@@ -1,48 +1,25 @@
 <template>
-  <div class="rover-images" v-show="manifestLoaded(id) && imagesLoaded">
-    <div class="search-settings">
-      <div class="date-and-sol-inputs">
-        <h2>Search by:</h2>
-        <div class="date-settings">
-          <div class="input-wrapper">
-            <label for="earth-date">Earth date</label>
-            <datepicker id="earth-date" v-model="searchDate" format="MMM dsu yyyy" calendar-class="datepicker"></datepicker>
-          </div>
-
-          <div class="input-wrapper">
-            <label for="sol" class="sol-label">
-              <span class="label-text">Sol</span>
-              <InfoIcon class="info-icon" v-tooltip="{ content: solTooltip, classes: ['tooltip', 'below'], placement: 'below'}"></InfoIcon>
-            </label>
-            <input id="sol" type="number">
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="rover-images" v-if="manifestLoaded(id) && imagesLoaded">
+    <SearchBar :rover="rover" :manifest="manifest" @search="fetchImagesByEarthDate"></SearchBar>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import {NASA_API_KEY} from '../../configuration/API_KEY';
-  import {emptyManifest, NASA_API_BASE_URL} from '@/utility';
+  import {NASA_API_BASE_URL, emptyManifest} from '@/utility';
   import {mapGetters} from 'vuex';
   import {IManifest} from '@/interfaces';
   import {Rover} from '@/enums';
-  import Datepicker from 'vuejs-datepicker';
-  import InfoIcon from '@/assets/icons/InfoIcon.vue';
-  import moment from 'moment';
+  import SearchBar from '@/components/SearchBar.vue';
 
   interface IRoverImages {
     rover: Rover;
     manifest: IManifest;
-    searchDate: string;
-    searchSol: string;
-    solTooltip: string;
     imagesLoaded: boolean;
 
     getManifestFromApiOrStore(rover: Rover): void;
-    fetchImagesForLastEarthDay(rover: Rover): void;
+    fetchImagesByEarthDate(date?: string): void;
 
     // Props
     id: number;
@@ -57,19 +34,12 @@
       }
     },
     computed: {
-      ...mapGetters(['manifestLoaded', 'getManifest']),
-      searchDateFormatted() {
-        const self = this as IRoverImages;
-        return moment(self.searchDate).format('YYYY-MM-DD');
-      }
+      ...mapGetters(['manifestLoaded', 'getManifest'])
     },
     data() {
       return {
         rover: -1,
         manifest: emptyManifest,
-        searchDate: '',
-        searchSol: '',
-        solTooltip: '',
         imagesLoaded: false
       }
     },
@@ -78,9 +48,8 @@
       self.rover = self.id;
 
       await self.getManifestFromApiOrStore(self.rover);
-      await self.fetchImagesForLastEarthDay(self.rover);
-      self.searchDate = self.manifest.max_date;
-      self.solTooltip = `Should be a number between 0 (landing date) and ${self.manifest.max_sol} (latest available sol with images)`;
+      await self.fetchImagesByEarthDate();
+
       self.imagesLoaded = true;
     },
     methods: {
@@ -114,18 +83,18 @@
             break;
         }
       },
-      fetchImagesForLastEarthDay(rover: Rover) {
+      fetchImagesByEarthDate(date?: string) {
         const self = this as IRoverImages;
-        const roverName = Rover[rover].toLowerCase();
-        fetch(`${NASA_API_BASE_URL}/rovers/${roverName}/photos?earth_date=${self.manifest.max_date}&api_key=${NASA_API_KEY}`)
+        const roverName = Rover[self.rover].toLowerCase();
+        const dateToUse = date === undefined || date === '' ? self.manifest.max_date : date;
+        fetch(`${NASA_API_BASE_URL}/rovers/${roverName}/photos?earth_date=${dateToUse}&api_key=${NASA_API_KEY}`)
       },
       setManifestLoadedValue(action: string, value:boolean) {
         this.$store.dispatch(action, value);
       }
     },
     components: {
-      Datepicker,
-      InfoIcon
+      SearchBar
     }
   });
 </script>
@@ -134,54 +103,111 @@
   @import "src/assets/styles/variables";
 
   .search-settings {
+    --info-icon-size: 1.1rem;
+
+    display: flex;
     width: 100%;
     background: $color-black-transparent;
     padding: 1rem;
 
     h2 {
-      font-size: 1.25rem;
+      /*font-size: 1.25rem;*/
+      font-size: 1rem;
       display: inline-block;
-      margin-bottom: 0.5rem;
-      border-bottom: 2px solid #b37168;
-      padding-bottom: 5px;
+      letter-spacing: 1px;
     }
 
-    .date-settings {
+    .info-icon {
+      width: var(--info-icon-size);
+      height: var(--info-icon-size);
+      fill: $color-accent;
+      color: white;
+      cursor: default;
+    }
+
+    .date-and-sol-settings {
       display: flex;
-      .input-wrapper:first-child {
+      align-items: center;
+
+      .content {
+        margin-left: 1rem;
+        display: flex;
+        top: 2px;
+
+        .switch {
+          margin-right: 1rem;
+          top: 2px;
+
+          .info-icon {
+            margin-left: 0.5rem;
+          }
+        }
+
+        .input-wrapper:first-child {
+          margin-left: 1rem;
+          margin-right: 1rem;
+          height: 100%;
+          width: 2px;
+          background-color: $color-accent;
+        }
+      }
+
+      &::after {
+        content: '';
+        height: 100%;
+        width: 2px;
+        background-color: $color-accent;
         margin-right: 1rem;
       }
     }
 
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
     .input-wrapper {
-      width: 120px;
+      width: 105px;
 
       input {
         max-width: 100%;
       }
-
-      label {
-        display: block;
-        margin-bottom: 0.25em;
-      }
-
-      &:not(:last-child) {
-        margin-bottom: 0.5rem;
-      }
     }
 
-    label.sol-label {
+    .search-button {
+      align-self: center;
+      margin-left: 1rem;
+      height: 27px;
+    }
+
+    .divider {
+      margin-left: 1rem;
+    }
+
+    .camera-settings {
       display: flex;
       align-items: center;
-      .label-text {
-        margin-right: 0.5rem;
+
+      .heading {
+        position: relative;
+        margin-right: 2.5rem;
+      }
+
+      .camera {
+        margin: 0.25rem 0;
+        font-size: 0.85rem;
+
+        .label-text {
+          position: relative;
+          top: 2px;
+        }
       }
 
       .info-icon {
-        width: 1.1em;
-        height: 1.1em;
-        fill: $color-accent;
-        color: white;
+        position: absolute;
+        top: 3px;
+        margin-left: 0.5rem;
       }
     }
   }

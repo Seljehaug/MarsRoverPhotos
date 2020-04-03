@@ -1,3 +1,5 @@
+import {Camera} from "@/enums";
+
 export interface IManifest {
   name: string;
   landing_date: string;
@@ -6,4 +8,10 @@ export interface IManifest {
   max_sol: number;
   status: string;
   total_photos: number;
+}
+
+export interface ICameraData {
+  id: Camera;
+  name: string;
+  fullName: string;
 }

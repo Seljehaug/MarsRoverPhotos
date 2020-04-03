@@ -1,4 +1,5 @@
 @import 'src/assets/styles/variables';
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
 
 * {
   box-sizing: border-box;
@@ -39,11 +40,6 @@ a {
   }
 }
 
-input {
-  font-family: inherit;
-  padding: 0.2rem;
-}
-
 .main-heading a {
   color: $color-white;
   text-decoration: none;
@@ -53,12 +49,36 @@ input {
   }
 }
 
+input {
+  font-family: inherit;
+  padding: 0.2rem;
+}
+
+button {
+  font-family: inherit;
+  font-weight: bold;
+  border: none;
+  padding: 0.2em 0.6em;
+  height: 25px;
+  color: $color-white;
+  background: $color-accent;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border-radius: 2px;
+  
+  &:hover, &:focus {
+    outline: none;
+    background-color: darken($color-accent, 5%);
+  }
+}
+
 // Datepicker component custom styles
 .vdp-datepicker {
-  width: 120px;
+  width: 105px;
   
   input[type='text'] {
-    width: 120px;
+    width: 105px;
   }
   
   * {
@@ -70,6 +90,11 @@ input {
     border: none;
     margin-top: 0.5rem;
     color: white;
+  }
+  
+  // Center calendar below input 
+  .vdp-datepicker__calendar {
+    transform: translateX(-30%);
   }
   
   // Arrows
@@ -134,4 +159,42 @@ input {
   font-size: 0.85rem;
   padding: 0.5rem;
   line-height: 1.35;
+}
+
+// Switch 
+.p-switch.pretty {
+  transform: rotate(180deg);
+  left: 0.85rem;
+  margin-left: 0.5rem;
+  margin-right: 1.25rem;
+  top: 2px;
+
+  input, input:checked {
+    ~ .state:before {
+      border-color: $color-white;
+    }
+    
+    ~ .state label:after {
+      background-color: $color-white !important;
+    }
+  }
+  
+  label:before, label:after {
+    //top: -2px;
+  }
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.switch-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &:hover, &:focus {
+    color: $color-white-hover;
+  }
 }
