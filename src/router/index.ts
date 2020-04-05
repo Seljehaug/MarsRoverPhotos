@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Manifests from '../views/Manifests.vue'
-import RoverImages from '../views/RoverImages.vue'
+import ManifestsComponent from '../views/ManifestsComponent.vue'
+import RoverImagesComponent from '../views/RoverImagesComponent.vue'
 
 Vue.use(VueRouter);
 
@@ -9,12 +9,12 @@ const routes = [
   {
     path: '/',
     name: 'Manifests',
-    component: Manifests
+    component: ManifestsComponent
   },
   {
     path: '/rover/:id/images',
     name: 'RoverImages',
-    component: RoverImages,
+    component: RoverImagesComponent,
     props: (route: any) => {
       const id = parseInt(route.params.id);
       return { id }

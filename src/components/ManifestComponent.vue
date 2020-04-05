@@ -48,7 +48,7 @@
   }
 
   export default Vue.extend({
-    name: 'Manifest',
+    name: 'ManifestComponent',
     props: {
       rover: {
         type: Number,

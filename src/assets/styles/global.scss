@@ -8,8 +8,6 @@
 }
 
 body {
-  background-image: url("../images/mars_surface.jpg");
-  background-size: cover;
   font-family: 'Montserrat', 'sans-serif';
   padding: 1rem;
   max-width: 1400px;
@@ -17,6 +15,17 @@ body {
   min-height: 100vh;
   margin: 0 auto;
   color: $color-white;
+}
+
+.background {
+  background-image: url("../images/mars_surface.jpg");
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
 h1 {
@@ -75,10 +84,10 @@ button {
 
 // Datepicker component custom styles
 .vdp-datepicker {
-  width: 105px;
+  width: 110px;
   
   input[type='text'] {
-    width: 105px;
+    width: 110px;
   }
   
   * {

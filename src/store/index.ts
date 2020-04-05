@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {emptyManifest} from '@/utility';
-import {Rover} from '@/enums';
+import {Camera, Rover} from '@/enums';
 import {ICameraData, IManifest} from '@/interfaces';
 
 Vue.use(Vuex);
@@ -92,6 +92,17 @@ export default new Vuex.Store({
         case Rover.Opportunity: return state.opportunityManifest;
         case Rover.Spirit: return state.spiritManifest;
       }
+    },
+    getSelectedCameras: state => {
+      const selected: Camera[] = [];
+
+      state.selectedCameras.forEach((camera: ICameraData) => {
+        selected.push(camera.id);
+      });
+
+      return selected;
+
+      // return state.selectedCameras;
     }
   }
 })

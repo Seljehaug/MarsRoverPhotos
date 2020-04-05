@@ -25,16 +25,16 @@ export const curiosityCameras = [
 export const opportunityCameras = [
   {id: Camera.FHAZ, name: 'FHAZ', fullName: 'Front Hazard Avoidance Camera'},
   {id: Camera.RHAZ, name: 'RHAZ', fullName: 'Rear Hazard Avoidance Camera'},
-  {id: Camera.MAHLI, name: 'MAHLI', fullName: 'Mars Hand Lens Imager'},
-  {id: Camera.MARDI, name: 'MARDI', fullName: 'Mars Descent Imager'},
-  {id: Camera.NAVCAM, name: 'NAVCAM', fullName: 'Navigation Camera'}];
+  {id: Camera.NAVCAM, name: 'NAVCAM', fullName: 'Navigation Camera'},
+  {id: Camera.PANCAM, name: 'PANCAM', fullName: 'Panoramic Camera'},
+  {id: Camera.PANCAM, name: 'MINITES', fullName: 'Miniature Thermal Emission Spectrometer (Mini-TES)'}];
 
 export const spiritCameras = [
   {id: Camera.FHAZ, name: 'FHAZ', fullName: 'Front Hazard Avoidance Camera'},
   {id: Camera.RHAZ, name: 'RHAZ', fullName: 'Rear Hazard Avoidance Camera'},
-  {id: Camera.MAHLI, name: 'MAHLI', fullName: 'Mars Hand Lens Imager'},
-  {id: Camera.MARDI, name: 'MARDI', fullName: 'Mars Descent Imager'},
-  {id: Camera.NAVCAM, name: 'NAVCAM', fullName: 'Navigation Camera'}];
+  {id: Camera.NAVCAM, name: 'NAVCAM', fullName: 'Navigation Camera'},
+  {id: Camera.PANCAM, name: 'PANCAM', fullName: 'Panoramic Camera'},
+  {id: Camera.PANCAM, name: 'MINITES', fullName: 'Miniature Thermal Emission Spectrometer (Mini-TES)'}];
 
 export function getCamerasForRover(rover: Rover): ICameraData[] {
   switch (rover) {

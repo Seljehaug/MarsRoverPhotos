@@ -1,16 +1,16 @@
 <template>
   <div class="home">
     <div class="manifests">
-      <Manifest :rover="curiosity"/>
-      <Manifest :rover="opportunity"/>
-      <Manifest :rover="spirit"/>
+      <ManifestComponent :rover="curiosity"/>
+      <ManifestComponent :rover="opportunity"/>
+      <ManifestComponent :rover="spirit"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
-  import Manifest from "@/components/Manifest.vue";
+  import ManifestComponent from "@/components/ManifestComponent.vue";
   import {Rover} from "@/enums";
 
   export default Vue.extend({
@@ -23,12 +23,8 @@
         spirit: Rover.Spirit,
       }
     },
-    // beforeRouteLeave(to, from, next) {
-    //   // this.$store.dispatch('setAllManifestsLoadedValue', false);
-    //   next();
-    // },
     components: {
-      Manifest
+      ManifestComponent
     }
   });
 </script>

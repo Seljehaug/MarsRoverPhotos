@@ -13,7 +13,7 @@
 
           <div class="input-wrapper">
             <datepicker v-show="searchByEarthDate" id="earth-date" v-model="searchDate" format="MMM dsu yyyy" calendar-class="datepicker"></datepicker>
-            <input v-show="searchByEarthDate === false" id="sol" type="number">
+            <input v-show="searchByEarthDate === false" id="sol" type="number" v-model="searchSol">
           </div>
 
           <button class="search-button" @click="search">Search</button>
@@ -29,7 +29,7 @@
         </h2>
 
         <div class="content">
-          <div class="camera" v-for="camera in availableCameras" :key="camera.id">
+          <div class="camera" v-for="(camera, index) in availableCameras" :key="index">
             <p-check class="p-default" :value="camera" v-model="selectedCameras">
               <span class="label-text">{{camera.name}}</span>
             </p-check>
@@ -49,7 +49,7 @@
   import Datepicker from 'vuejs-datepicker';
   import {getCamerasForRover} from '@/utility';
   import InfoIcon from '@/assets/icons/InfoIcon.vue';
-  import SearchBar from '@/components/SearchBar.vue';
+  // import SearchBarComponent from '@/components/SearchBarComponent.vue';
 
   interface ISearchBar {
     searchDate: string;
@@ -70,7 +70,7 @@
   }
 
   export default Vue.extend({
-    name: 'SearchBar',
+    name: 'SearchBarComponent',
     props: {
       rover: {
         type: Number as () => Rover,
@@ -108,12 +108,18 @@
       await this.$store.dispatch('setSelectedCameras', self.selectedCameras);
 
       self.searchDate = self.manifest.max_date;
+
       self.createTooltips();
+
+      self.$emit('search', { searchByEarthDate: self.searchByEarthDate, query: self.searchDate});
     },
     methods: {
-      search() {
+      async search() {
         const self = this as ISearchBar;
-        self.$emit('search', this.searchDateFormatted);
+        await this.$store.dispatch('setSelectedCameras', self.selectedCameras);
+
+        const query = self.searchByEarthDate ? this.searchDateFormatted : self.searchSol;
+        self.$emit('search', { searchByEarthDate: self.searchByEarthDate, query: query});
       },
       createTooltips() {
         const self = this as ISearchBar;
@@ -166,7 +172,7 @@
       .content {
         margin-left: 1rem;
         display: flex;
-        top: 2px;
+        /*top: 2px;*/
 
         .switch {
           margin-right: 1rem;
@@ -202,7 +208,7 @@
     }
 
     .input-wrapper {
-      width: 105px;
+      width: 110px;
 
       input {
         max-width: 100%;
