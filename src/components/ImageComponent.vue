@@ -46,7 +46,6 @@
       max-width: 100%;
       align-self: center;
       max-height: 150px;
-
     }
   }
 </style>

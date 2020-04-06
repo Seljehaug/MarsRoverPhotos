@@ -13,7 +13,7 @@
 
           <div class="input-wrapper">
             <datepicker v-show="searchByEarthDate" id="earth-date" v-model="searchDate" format="MMM dsu yyyy" calendar-class="datepicker"></datepicker>
-            <input v-show="searchByEarthDate === false" id="sol" type="number" v-model="searchSol">
+            <input v-show="searchByEarthDate === false" id="sol" type="number" v-model="searchSol" v-on:keyup.enter="search">
           </div>
 
           <button class="search-button" @click="search">Search</button>
@@ -172,7 +172,6 @@
       .content {
         margin-left: 1rem;
         display: flex;
-        /*top: 2px;*/
 
         .switch {
           margin-right: 1rem;

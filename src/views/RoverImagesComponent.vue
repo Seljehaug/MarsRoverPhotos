@@ -2,6 +2,7 @@
   <div class="rover-images" v-if="manifestLoaded(id)">
     <SearchBarComponent :rover="rover" :manifest="manifest" @search="search"/>
     <ImageGridComponent :images="imagesFilteredByCameras"/>
+<!--    <LightBox :media="activeImage"/>-->
   </div>
 </template>
 
@@ -10,23 +11,25 @@
   import {NASA_API_KEY} from '../../configuration/API_KEY';
   import {NASA_API_BASE_URL, emptyManifest} from '@/utility';
   import {mapGetters} from 'vuex';
-  import {IImage, IManifest} from '@/interfaces';
+  import {IImageData, IManifest} from '@/interfaces';
   import {Camera, Rover} from '@/enums';
   import SearchBarComponent from '@/components/SearchBarComponent.vue';
   import ImageGridComponent from '@/components/ImageGridComponent.vue';
+  import LightBox from 'vue-image-lightbox';
 
   interface IRoverImages {
     rover: Rover;
     manifest: IManifest;
-    // initialImagesLoaded: boolean;
-    allImages: any[]; //TODO
+    allImages: IImageData[];
     selectedCameras: Camera[];
-    imagesFilteredByCameras: any[]; // TODO
+    imagesFilteredByCameras: IImageData[];
+    activeImage: any[]; // TODO
 
     getManifestFromApiOrStore(rover: Rover): void;
     search(settings: {searchByEarthDate: boolean, query: string}): void;
-    fetchImagesByEarthDate(date?: string): void;
-    fetchImagesBySol(sol: string): void;
+    searchImagesByEarthDate(date?: string): void;
+    searchImagesBySol(sol: string): void;
+    fetchImages(url: string): void;
 
     // Props
     id: number;
@@ -40,30 +43,23 @@
         type: Number
       }
     },
-    computed: {
-      ...mapGetters(['manifestLoaded', 'getManifest', 'getSelectedCameras'])
-    },
     data() {
       return {
         rover: -1,
         manifest: emptyManifest,
-        // initialImagesLoaded: false,
         allImages: [],
         selectedCameras: [],
-        imagesFilteredByCameras: []
+        imagesFilteredByCameras: [],
+        activeImage: []
       }
+    },
+    computed: {
+      ...mapGetters(['manifestLoaded', 'getManifest', 'getSelectedCameras'])
     },
     async created() {
       const self = this as IRoverImages;
       self.rover = self.id;
-
       await self.getManifestFromApiOrStore(self.rover);
-      // await self.fetchImagesByEarthDate();
-
-      // TODO
-      // self.selectedCameras = this.getSelectedCameras;
-
-      // self.initialImagesLoaded = true;
     },
     methods: {
       async getManifestFromApiOrStore(rover: Rover) {
@@ -102,41 +98,49 @@
         self.selectedCameras = this.getSelectedCameras;
 
         if(settings.searchByEarthDate) {
-          self.fetchImagesByEarthDate(settings.query);
+          self.searchImagesByEarthDate(settings.query);
         } else {
-          self.fetchImagesBySol(settings.query);
+          self.searchImagesBySol(settings.query);
         }
       },
-      async fetchImagesByEarthDate(date?: string) {
+      searchImagesByEarthDate(date?: string) {
         const self = this as IRoverImages;
-        const roverName = Rover[self.rover].toLowerCase();
-        const dateToUse = date === undefined || date === '' ? self.manifest.max_date : date;
 
         if(!date) {
           self.selectedCameras = this.getSelectedCameras;
         }
 
+        const roverName = Rover[self.rover].toLowerCase();
+        const dateToUse = date === undefined || date === '' ? self.manifest.max_date : date;
+
+        const url = `${NASA_API_BASE_URL}/rovers/${roverName}/photos?earth_date=${dateToUse}&api_key=${NASA_API_KEY}`;
+        self.fetchImages(url);
+      },
+      searchImagesBySol(sol: string) {
+        const self = this as IRoverImages;
+        self.selectedCameras = this.getSelectedCameras;
+
+        const roverName = Rover[self.rover].toLowerCase();
+        const url = `${NASA_API_BASE_URL}/rovers/${roverName}/photos?sol=${sol}&api_key=${NASA_API_KEY}`;
+
+        self.fetchImages(url);
+      },
+      fetchImages(url: string) {
+        const self = this as IRoverImages;
+
         self.allImages = [];
-        await fetch(`${NASA_API_BASE_URL}/rovers/${roverName}/photos?earth_date=${dateToUse}&api_key=${NASA_API_KEY}`)
+        fetch(url)
           .then(response => {
             return response.json()
-            .then(data => {
-              data.photos.forEach((img: any) => {
-                const {id, img_src} = img;
-                const camera = Camera[img.camera.name];
-                self.allImages.push({id, img_src, camera});
-              });
-
-              // if(date) {
-                // self.imagesFilteredByCameras = self.allImages.filter(img => selected.includes(img.camera))
-                // self.imagesFilteredByCameras = self.allImages.filter(img => this.getSelectedCameras.includes(img.camera))
-              // }
-            }
-        )});
-      },
-      fetchImagesBySol(sol: string) {
-        const self = this as IRoverImages;
-        const roverName = Rover[self.rover].toLowerCase();
+              .then(data => {
+                data.photos.forEach((img: any) => {
+                  const {id, img_src} = img;
+                  const camera = Camera[img.camera.name];
+                  self.allImages.push({id, img_src, camera});
+                });
+              }
+            )
+          });
       },
       setManifestLoadedValue(action: string, value:boolean) {
         this.$store.dispatch(action, value);
@@ -145,13 +149,13 @@
     watch: {
       allImages: function() {
         const self = this as IRoverImages;
-        self.imagesFilteredByCameras = [];
         self.imagesFilteredByCameras = self.allImages.filter(img => self.selectedCameras.includes(img.camera));
       }
     },
     components: {
       SearchBarComponent,
-      ImageGridComponent
+      ImageGridComponent,
+      LightBox
     }
   });
 </script>

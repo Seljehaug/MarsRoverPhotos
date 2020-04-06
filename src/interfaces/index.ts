@@ -16,8 +16,8 @@ export interface ICameraData {
   fullName: string;
 }
 
-export interface IImage {
+export interface IImageData {
   id: number;
   img_src: string;
-  camera: Camera | string;
+  camera: any;
 }

@@ -101,8 +101,6 @@ export default new Vuex.Store({
       });
 
       return selected;
-
-      // return state.selectedCameras;
     }
   }
 })
