@@ -21,10 +21,9 @@
 
     <div class="total-images">
       <h3 class="heading">
-        <span class="text">Total images taken</span>
-        <router-link :to="{ name: 'RoverImages', params: { id: +rover } }">See all</router-link>
+        <span class="amount">{{manifest.total_photos}}</span> <span>images</span>
       </h3>
-      <p class="amount">{{manifest.total_photos}}</p>
+      <router-link :to="{ name: 'RoverImages', params: { id: +rover } }" class="link">See all</router-link>
     </div>
   </div>
 </template>
@@ -117,7 +116,6 @@
     background: $color-black-transparent;
 
     p {
-      margin-bottom: 0.25rem;
       font-size: 0.75rem;
     }
   }
@@ -138,7 +136,7 @@
     }
   }
 
-  .launched, .landed, .status {
+  .launched, .landed {
     margin-right: 2rem;
   }
 
@@ -147,25 +145,14 @@
   }
 
   .total-images {
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
 
     .heading {
-      .text {
-        display: block;
-        margin-bottom: 2px;
-      }
+      font-size: 1rem;
     }
 
-    .amount {
-      font-size: 3rem;
+    .link {
       font-weight: bold;
-      margin-right: 0.5rem;
-      color: $color-accent;
-      margin-bottom: 0;
     }
   }
 
@@ -217,6 +204,59 @@
 
     img {
       max-width: 100%;
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .launched, .landed {
+      margin-right: 1rem;
+    }
+  }
+
+  @media only screen and (max-width: 1000px) {
+    .manifest-heading {
+      font-size: 1.5rem;
+    }
+
+    .launched, .landed {
+      margin-right: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .manifest-info {
+      flex-wrap: wrap;
+      > div {
+        width: 100%;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 700px) {
+    .manifest-heading {
+      font-size: 1.35rem;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .manifest {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .manifest-info {
+      > div {
+        width: auto;
+      }
+    }
+
+    .launched, .landed {
+      margin-right: 2rem;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .launched, .landed {
+      margin-right: 1rem;
     }
   }
 </style>

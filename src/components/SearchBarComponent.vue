@@ -3,13 +3,13 @@
     <div class="search-settings">
       <div class="date-and-sol-settings">
         <h2 class="heading">Use:</h2>
+        <div class="switch">
+          <label for="earth-date" class="switch-label earth-label" @click="searchByEarthDate = true">Earth date</label>
+          <p-check class="p-switch" v-model="searchByEarthDate"></p-check>
+          <label for="sol" class="switch-label sol-label" @click="searchByEarthDate = false">Mars sol <InfoIcon class="info-icon" v-tooltip="{ content: solTooltip, classes: ['tooltip', 'below'], placement: 'below'}"></InfoIcon></label>
+        </div>
 
         <div class="content">
-          <div class="switch">
-            <label for="earth-date" class="switch-label" @click="searchByEarthDate = true">Earth date</label>
-            <p-check class="p-switch" v-model="searchByEarthDate"></p-check>
-            <label for="sol" class="switch-label" @click="searchByEarthDate = false">Mars sol <InfoIcon class="info-icon" v-tooltip="{ content: solTooltip, classes: ['tooltip', 'below'], placement: 'below'}"></InfoIcon></label>
-          </div>
 
           <div class="input-wrapper">
             <datepicker v-show="searchByEarthDate" id="earth-date" v-model="searchDate" format="MMM dsu yyyy" calendar-class="datepicker"></datepicker>
@@ -17,6 +17,11 @@
           </div>
 
           <button class="search-button" @click="search">Search</button>
+          <button class="toggle-cameras-button">
+            Cameras
+            <!-- TODO Change to arrow-down class, rotate arrow -->
+            <span class="arrow arrow-down">&darr;</span>
+          </button>
         </div>
 
         <div class="divider"></div>
@@ -49,7 +54,6 @@
   import Datepicker from 'vuejs-datepicker';
   import {getCamerasForRover} from '@/utility';
   import InfoIcon from '@/assets/icons/InfoIcon.vue';
-  // import SearchBarComponent from '@/components/SearchBarComponent.vue';
 
   interface ISearchBar {
     searchDate: string;
@@ -169,6 +173,10 @@
       display: flex;
       align-items: center;
 
+      .earth-label, .sol-label .info-icon {
+        margin-left: 0.25rem;
+      }
+
       .content {
         margin-left: 1rem;
         display: flex;
@@ -182,22 +190,22 @@
           }
         }
 
-        .input-wrapper:first-child {
+        /*.input-wrapper:first-child {
           margin-left: 1rem;
           margin-right: 1rem;
           height: 100%;
           width: 2px;
           background-color: $color-accent;
-        }
+        }*/
       }
 
-      &::after {
+      /*&::after {
         content: '';
         height: 100%;
         width: 2px;
         background-color: $color-accent;
         margin-right: 1rem;
-      }
+      }*/
     }
 
     .content {
@@ -214,14 +222,23 @@
       }
     }
 
-    .search-button {
+    button, input {
       align-self: center;
       margin-left: 1rem;
       height: 27px;
     }
 
+    .toggle-cameras-button {
+      display: none;
+      background-color: #616161;
+    }
+
     .divider {
       margin-left: 1rem;
+      margin-right: 1rem;
+      background-color: $color-accent;
+      height: 100%;
+      width: 2px;
     }
 
     .camera-settings {
@@ -245,8 +262,64 @@
 
       .info-icon {
         position: absolute;
-        top: 3px;
+        top: 2px;
         margin-left: 0.5rem;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 700px) {
+    .search-settings {
+      flex-wrap: wrap;
+
+      .divider {
+        display: none;
+      }
+
+      .date-and-sol-settings, .camera-settings {
+        width: 100%;
+      }
+
+      .date-and-sol-settings {
+        flex-wrap: wrap;
+
+        .info-icon {
+          margin-left: 0.25rem;
+        }
+
+        .content {
+          margin-top: 0.5rem;
+          margin-left: 0;
+        }
+      }
+
+      .toggle-cameras-button {
+        display: block;
+      }
+
+      button, input {
+        font-size: 0.75rem;
+      }
+
+      button {
+        margin-left: 0.5rem;
+      }
+
+      input {
+        margin-left: 0;
+      }
+
+      #sol, .input-wrapper {
+        width: 100px;
+      }
+    }
+
+    .camera-settings {
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+
+      .heading .info-icon {
+        top: 0;
       }
     }
   }

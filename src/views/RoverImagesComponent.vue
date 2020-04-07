@@ -226,14 +226,6 @@
       position: relative;
     }
 
-    .input-wrapper {
-      width: 110px;
-
-      input {
-        max-width: 100%;
-      }
-    }
-
     .search-button {
       align-self: center;
       margin-left: 1rem;

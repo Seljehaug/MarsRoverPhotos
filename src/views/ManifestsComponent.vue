@@ -40,6 +40,6 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    margin-top: 2rem;
+    flex-wrap: wrap;
   }
 </style>

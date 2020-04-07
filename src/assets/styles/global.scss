@@ -30,6 +30,7 @@ body {
 
 h1 {
   font-size: 4rem;
+  margin-bottom: 1rem;
 }
 
 h2 {
@@ -81,6 +82,20 @@ button {
     background-color: darken($color-accent, 5%);
   }
 }
+
+@media only screen and (max-width: 1000px) {
+  h1 {
+    font-size: 2.75rem;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Datepicker component custom styles
 .vdp-datepicker {
@@ -147,6 +162,27 @@ button {
       }
       
     }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .vdp-datepicker {
+    width: 100px;
+
+    input[type='text'] {
+      width: 100px;
+      font-size: 0.75rem;
+    }
+  }
+  
+  .vdp-datepicker .vdp-datepicker__calendar {
+    transform: translateX(0%);
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .vdp-datepicker .vdp-datepicker__calendar {
+    transform: translateX(-7%);
   }
 }
 
