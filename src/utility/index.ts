@@ -17,10 +17,10 @@ export const curiosityCameras = [
   {id: Camera.FHAZ, name: 'FHAZ', fullName: 'Front Hazard Avoidance Camera'},
   {id: Camera.RHAZ, name: 'RHAZ', fullName: 'Rear Hazard Avoidance Camera'},
   {id: Camera.MAST, name: 'MAST', fullName: 'Mast Camera'},
-  {id: Camera.CHEMCAM, name: 'CHEMCAM', fullName: 'Chemistry and Camera Complex'},
   {id: Camera.MAHLI, name: 'MAHLI', fullName: 'Mars Hand Lens Imager'},
   {id: Camera.MARDI, name: 'MARDI', fullName: 'Mars Descent Imager'},
-  {id: Camera.NAVCAM, name: 'NAVCAM', fullName: 'Navigation Camera'}];
+  {id: Camera.NAVCAM, name: 'NAVCAM', fullName: 'Navigation Camera'},
+  {id: Camera.CHEMCAM, name: 'CHEMCAM', fullName: 'Chemistry and Camera Complex'}];
 
 export const opportunityCameras = [
   {id: Camera.FHAZ, name: 'FHAZ', fullName: 'Front Hazard Avoidance Camera'},

@@ -17,8 +17,8 @@
           </div>
 
           <button class="search-button" @click="search">Search</button>
-          <button class="toggle-cameras-button">
-            Cameras
+          <button class="toggle-cameras-button" @click="toggleFilter">
+            Filter
             <!-- TODO Change to arrow-down class, rotate arrow -->
             <span class="arrow arrow-down">&darr;</span>
           </button>
@@ -27,7 +27,7 @@
         <div class="divider"></div>
       </div>
 
-      <div class="camera-settings">
+      <div class="camera-settings" v-show="showFilter">
         <h2 class="heading">
           Cameras:
           <InfoIcon class="info-icon" v-tooltip="{ content: camerasTooltip, classes: ['tooltip', 'below'], placement: 'below'}"></InfoIcon>
@@ -63,10 +63,12 @@
     availableCameras: {id: Camera, name: string, fullName: string}[];
     selectedCameras: {id: Camera, name: string, fullName: string}[];
     searchByEarthDate: boolean;
+    showFilter: boolean;
     $emit: any;
 
     createTooltips(): void;
     search(): void;
+    toggleFilter(): void;
 
     // Props
     rover: Rover;
@@ -93,7 +95,8 @@
         camerasTooltip: '',
         availableCameras: [],
         selectedCameras: [],
-        searchByEarthDate: true
+        searchByEarthDate: true,
+        showFilter: true
       }
     },
     computed: {
@@ -136,6 +139,10 @@
         });
         self.camerasTooltip = camerasTooltipText;
       },
+      toggleFilter() {
+        const self = this as ISearchBar;
+        self.showFilter = !self.showFilter;
+      }
     },
     components: {
       Datepicker,
@@ -156,7 +163,7 @@
     padding: 1rem;
 
     h2 {
-      font-size: 1rem;
+      font-size: 0.85rem;
       display: inline-block;
       letter-spacing: 1px;
     }
@@ -177,55 +184,41 @@
         margin-left: 0.25rem;
       }
 
-      .content {
-        margin-left: 1rem;
-        display: flex;
-
-        .switch {
-          margin-right: 1rem;
-          top: 2px;
-
-          .info-icon {
-            margin-left: 0.5rem;
-          }
-        }
-
-        /*.input-wrapper:first-child {
-          margin-left: 1rem;
-          margin-right: 1rem;
-          height: 100%;
-          width: 2px;
-          background-color: $color-accent;
-        }*/
-      }
-
-      /*&::after {
-        content: '';
-        height: 100%;
-        width: 2px;
-        background-color: $color-accent;
+      .switch {
         margin-right: 1rem;
-      }*/
+        top: 2px;
+
+        .info-icon {
+          margin-left: 0.5rem;
+        }
+      }
+      .switch-label {
+        white-space: nowrap;
+      }
     }
 
     .content {
       display: flex;
-      flex-wrap: wrap;
       position: relative;
     }
 
     .input-wrapper {
-      width: 110px;
+      width: 100px;
 
       input {
         max-width: 100%;
+        font-size: 0.75rem;
       }
     }
 
     button, input {
       align-self: center;
-      margin-left: 1rem;
       height: 27px;
+    }
+
+    button {
+      letter-spacing: 1px;
+      margin-left: 1rem;
     }
 
     .toggle-cameras-button {
@@ -250,27 +243,35 @@
         margin-right: 2.5rem;
       }
 
-      .camera {
-        margin: 0.25rem 0;
-        font-size: 0.85rem;
-
-        .label-text {
-          position: relative;
-          top: 2px;
-        }
-      }
-
       .info-icon {
         position: absolute;
-        top: 2px;
         margin-left: 0.5rem;
+      }
+
+      .content {
+        flex-wrap: wrap;
+      }
+    }
+
+    .camera {
+      margin: 0.25rem 0;
+      font-size: 0.85rem;
+
+      .label-text {
+        position: relative;
+        top: 1px;
+        font-size: 0.75rem;
       }
     }
   }
 
-  @media only screen and (max-width: 700px) {
+  @media only screen and (max-width: 1200px) {
     .search-settings {
       flex-wrap: wrap;
+
+      h2 {
+        font-size: 0.85rem;
+      }
 
       .divider {
         display: none;
@@ -282,19 +283,28 @@
 
       .date-and-sol-settings {
         flex-wrap: wrap;
+        margin-top: -0.5rem;
+        margin-bottom: -0.5rem;
 
         .info-icon {
           margin-left: 0.25rem;
         }
 
         .content {
-          margin-top: 0.5rem;
-          margin-left: 0;
+          padding: 0.5rem 0;
+        }
+
+        .switch {
+          margin-right: 0.5rem;
         }
       }
 
       .toggle-cameras-button {
         display: block;
+      }
+
+      .arrow {
+        font-size: 1rem;
       }
 
       button, input {
@@ -309,17 +319,41 @@
         margin-left: 0;
       }
 
-      #sol, .input-wrapper {
-        width: 100px;
+      .camera-settings {
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+
+        .heading {
+          margin-right: 45px; // lined up with switch button
+        }
+
+        .heading .info-icon {
+          top: 0;
+        }
       }
     }
 
-    .camera-settings {
-      margin-top: 0.5rem;
-      flex-wrap: wrap;
 
-      .heading .info-icon {
-        top: 0;
+  }
+
+  @media only screen and (max-width: 700px) {
+    .camera-settings .heading{
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  @media only screen and (max-width: 520px) {
+    .camera {
+      width: 90px;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .search-settings {
+      .camera-settings {
+        .label-text {
+          font-size: 0.75rem;
+        }
       }
     }
   }
