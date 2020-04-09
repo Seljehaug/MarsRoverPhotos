@@ -41,11 +41,23 @@
     background: rgba(0, 0, 0, 0.9);
     height: 150px;
 
+    // Flexbox fallback for browsers not supporting grid
+    width: 150px;
+    margin: 0.5rem;
+
     .image {
       background-size: cover;
       max-width: 100%;
       align-self: center;
       max-height: 150px;
     }
+  }
+
+  @supports(display: grid) {
+    .image-wrapper {
+      width: auto;
+      margin: 0;
+    }
+
   }
 </style>

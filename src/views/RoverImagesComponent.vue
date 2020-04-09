@@ -199,6 +199,8 @@
 
           .info-icon {
             margin-left: 0.5rem;
+            top: 0;
+            right: 26px;
           }
         }
 

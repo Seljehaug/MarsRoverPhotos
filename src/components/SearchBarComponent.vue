@@ -5,7 +5,7 @@
         <h2 class="heading">Use:</h2>
         <div class="switch">
           <label for="earth-date" class="switch-label earth-label" @click="searchByEarthDate = true">Earth date</label>
-          <p-check class="p-switch" v-model="searchByEarthDate"></p-check>
+          <p-check class="p-switch earth-sol-toggle" v-model="searchByEarthDate"></p-check>
           <label for="sol" class="switch-label sol-label" @click="searchByEarthDate = false">Mars sol <InfoIcon class="info-icon" v-tooltip="{ content: solTooltip, classes: ['tooltip', 'below'], placement: 'below'}"></InfoIcon></label>
         </div>
 
@@ -179,6 +179,7 @@
     .date-and-sol-settings {
       display: flex;
       align-items: center;
+      max-height: 27px; // specific height because of IE bug
 
       .earth-label, .sol-label .info-icon {
         margin-left: 0.25rem;
@@ -194,6 +195,10 @@
       }
       .switch-label {
         white-space: nowrap;
+      }
+
+      .earth-sol-toggle {
+        margin: 0 0.5rem;
       }
     }
 
@@ -282,6 +287,7 @@
       }
 
       .date-and-sol-settings {
+        max-height: 43px; // specific height because of IE bug
         flex-wrap: wrap;
         margin-top: -0.5rem;
         margin-bottom: -0.5rem;
@@ -339,6 +345,12 @@
   @media only screen and (max-width: 700px) {
     .camera-settings .heading{
       margin-bottom: 0.25rem;
+    }
+  }
+
+  @media only screen and (max-width: 560px) {
+    .search-settings .date-and-sol-settings {
+      max-height: 61px; // specific height because of IE bug
     }
   }
 

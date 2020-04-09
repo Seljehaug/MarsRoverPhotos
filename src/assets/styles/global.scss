@@ -219,9 +219,8 @@ button {
 // Switch 
 .p-switch.pretty {
   transform: rotate(180deg);
-  left: 0.85rem;
-  margin-left: 0.5rem;
-  margin-right: 1.25rem;
+  margin-right: 0;
+  width: 30px;
   top: 2px;
 
   input, input:checked {

@@ -42,8 +42,17 @@
   .image-grid {
     margin-top: 1rem;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: .5rem;
+    // Flexbox fallback for browser not supporting grid
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @supports(display: grid) {
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-gap: .5rem;
+    }
   }
 </style>
