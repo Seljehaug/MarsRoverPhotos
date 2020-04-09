@@ -50,6 +50,9 @@
       max-width: 100%;
       align-self: center;
       max-height: 150px;
+
+      // Flexbox fallback
+      width: 100%;
     }
   }
 
@@ -57,6 +60,10 @@
     .image-wrapper {
       width: auto;
       margin: 0;
+
+      .image {
+        width: auto;
+      }
     }
 
   }
