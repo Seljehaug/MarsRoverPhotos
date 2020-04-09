@@ -179,7 +179,6 @@
     .date-and-sol-settings {
       display: flex;
       align-items: center;
-      max-height: 27px; // specific height because of IE bug
 
       .earth-label, .sol-label .info-icon {
         margin-left: 0.25rem;
@@ -188,6 +187,7 @@
       .switch {
         margin-right: 1rem;
         top: 2px;
+        height: 27px; // specific height because of IE bug
 
         .info-icon {
           margin-left: 0.5rem;
@@ -251,6 +251,8 @@
       .info-icon {
         position: absolute;
         margin-left: 0.5rem;
+        top: 0;
+        right: -26px;
       }
 
       .content {
@@ -287,7 +289,6 @@
       }
 
       .date-and-sol-settings {
-        max-height: 43px; // specific height because of IE bug
         flex-wrap: wrap;
         margin-top: -0.5rem;
         margin-bottom: -0.5rem;
@@ -345,12 +346,6 @@
   @media only screen and (max-width: 700px) {
     .camera-settings .heading{
       margin-bottom: 0.25rem;
-    }
-  }
-
-  @media only screen and (max-width: 560px) {
-    .search-settings .date-and-sol-settings {
-      max-height: 61px; // specific height because of IE bug
     }
   }
 
