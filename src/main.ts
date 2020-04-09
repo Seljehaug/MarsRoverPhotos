@@ -5,6 +5,8 @@ import store from './store'
 
 import './assets/styles/global.scss';
 
+import 'promise-polyfill/src/polyfill';
+import 'whatwg-fetch'
 import VTooltip from 'v-tooltip'
 import PrettyCheckbox from 'pretty-checkbox-vue';
 import Datepicker from 'vuejs-datepicker';
