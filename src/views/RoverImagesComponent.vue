@@ -1,8 +1,10 @@
 <template>
   <div class="rover-images" v-if="manifestLoaded(id)">
     <SearchBarComponent :rover="rover" :manifest="manifest" @search="search"/>
-    <ImageGridComponent :images="imagesFilteredByCameras"/>
-<!--    <LightBox :media="activeImage"/>-->
+    <ImageGridComponent :images="imagesFilteredByCameras" @open-lightbox="openLightBox"/>
+    <LightBoxComponent v-if="lightBoxIsActive" :activeImage="activeImage" :activeImagePos="activeImagePos" :lightBoxIsActive="lightBoxIsActive"
+      @closeLightBox="closeLightBox" @prevImage="prevImage" @nextImage="nextImage"
+    />
   </div>
 </template>
 
@@ -15,7 +17,7 @@
   import {Camera, Rover} from '@/enums';
   import SearchBarComponent from '@/components/SearchBarComponent.vue';
   import ImageGridComponent from '@/components/ImageGridComponent.vue';
-  import LightBox from 'vue-image-lightbox';
+  import LightBoxComponent from '@/components/LightBoxComponent.vue';
 
   interface IRoverImages {
     rover: Rover;
@@ -23,13 +25,20 @@
     allImages: IImageData[];
     selectedCameras: Camera[];
     imagesFilteredByCameras: IImageData[];
-    activeImage: any[]; // TODO
+    activeImagePos: number;
+    lightBoxIsActive: boolean;
+    activeImage: any;
+    $refs: any;
 
     getManifestFromApiOrStore(rover: Rover): void;
     search(settings: {searchByEarthDate: boolean, query: string}): void;
     searchImagesByEarthDate(date?: string): void;
     searchImagesBySol(sol: string): void;
     fetchImages(url: string): void;
+    openLightBox(index: number): void;
+    closeLightBox(): void;
+    prevImage(): void;
+    nextImage(): void;
 
     // Props
     id: number;
@@ -50,7 +59,9 @@
         allImages: [],
         selectedCameras: [],
         imagesFilteredByCameras: [],
-        activeImage: []
+        activeImagePos: 0,
+        lightBoxIsActive: false,
+        activeImage: null
       }
     },
     computed: {
@@ -136,7 +147,7 @@
                 data.photos.forEach((img: any) => {
                   const {id, img_src} = img;
                   const camera = Camera[img.camera.name];
-                  self.allImages.push({id, img_src, camera});
+                  self.allImages.push({id, img_src, camera: camera, cameraName: img.camera.name});
                 });
               }
             )
@@ -144,18 +155,43 @@
       },
       setManifestLoadedValue(action: string, value:boolean) {
         this.$store.dispatch(action, value);
+      },
+      openLightBox(index: number) {
+        const self = this as IRoverImages;
+
+        const imagePos = index;
+        self.activeImagePos = imagePos;
+        self.activeImage = self.imagesFilteredByCameras[imagePos];
+
+        if(self.activeImage !== null){
+          this.lightBoxIsActive = true;
+        }
+      },
+      closeLightBox() {
+        const self = this as IRoverImages;
+        self.lightBoxIsActive = false;
+      },
+      prevImage() {
+        const self = this as IRoverImages;
+        self.activeImagePos = self.activeImagePos === 0  ? self.imagesFilteredByCameras.length -1 : self.activeImagePos -1;
+        self.activeImage = self.imagesFilteredByCameras[self.activeImagePos];
+      },
+      nextImage() {
+        const self = this as IRoverImages;
+        self.activeImagePos = self.activeImagePos === self.imagesFilteredByCameras.length - 1 ? 0  : self.activeImagePos + 1;
+        self.activeImage = self.imagesFilteredByCameras[self.activeImagePos];
       }
     },
     watch: {
       allImages: function() {
         const self = this as IRoverImages;
-        self.imagesFilteredByCameras = self.allImages.filter(img => self.selectedCameras.includes(img.camera));
-      }
+        self.imagesFilteredByCameras = self.allImages.filter(img => self.selectedCameras.includes(<Camera>img.camera));
+      },
     },
     components: {
       SearchBarComponent,
       ImageGridComponent,
-      LightBox
+      LightBoxComponent
     }
   });
 </script>

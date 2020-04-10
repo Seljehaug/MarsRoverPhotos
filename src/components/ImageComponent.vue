@@ -1,5 +1,5 @@
 <template>
-  <div class="image-wrapper">
+  <div class="image-wrapper" @click="openLightBox">
     <img v-lazy="image.img_src" class="image" alt=""/>
   </div>
 
@@ -10,13 +10,23 @@
 
 
   interface IImage {
-    // $emit: any;
+    $emit: any;
+
+    openLightBox(): void;
+
+    // Props
+    image: any;
+    index: number;
   }
 
   export default Vue.extend({
     name: 'ImageComponent',
     props: {
       image: {
+        required: true
+      },
+      index: {
+        type: Number,
         required: true
       }
     },
@@ -28,6 +38,10 @@
     computed: {
     },
     methods: {
+      openLightBox() {
+        const self = this as IImage;
+        self.$emit('open-lightbox', self.index);
+      }
     }
   });
 </script>
@@ -36,6 +50,7 @@
   @import "src/assets/styles/variables";
 
   .image-wrapper {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     background: rgba(0, 0, 0, 0.9);

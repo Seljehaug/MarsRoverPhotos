@@ -1,4 +1,4 @@
-import {Camera} from "@/enums";
+import {Camera} from '@/enums';
 
 export interface IManifest {
   name: string;
@@ -19,5 +19,6 @@ export interface ICameraData {
 export interface IImageData {
   id: number;
   img_src: string;
-  camera: any;
+  camera: Camera | string;
+  cameraName: string;
 }

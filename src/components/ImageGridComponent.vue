@@ -1,18 +1,21 @@
 <template>
   <div class="image-grid">
-    <ImageComponent v-for="image in images" :key="image.id" :image="image"></ImageComponent>
+    <ImageComponent v-for="(image, index) in images" :key="image.id" :image="image" :index="index" @open-lightbox="openLightBox"></ImageComponent>
   </div>
-
 </template>
 
 <script lang="ts">
   import Vue from 'vue';
   import ImageComponent from '@/components/ImageComponent.vue';
+  import {IImageData} from '@/interfaces';
 
   interface IImageGrid {
-    // $emit: any;
+    $emit: any;
+
+    openLightBox(index: number): void;
+
     // Props
-    images: []; // TODO
+    images: IImageData[];
   }
 
   export default Vue.extend({
@@ -25,10 +28,11 @@
     data() {
       return {}
     },
-    created() {
-    },
     methods: {
-
+      openLightBox(index: number) {
+        const self = this as IImageGrid;
+        self.$emit('open-lightbox', index);
+      }
     },
     components: {
       ImageComponent
